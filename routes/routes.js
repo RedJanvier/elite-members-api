@@ -13,10 +13,8 @@ const deletes = require('../controllers/delete');
 const db = knex({
     client: 'pg',
     connection: {
-        host: '127.0.0.1',
-        user: 'RedJanvier',
-        password: 'test',
-        database: 'elite'
+        connectionString: process.env.DATABASE_URL,
+        ssh: true
     }
 })
 
