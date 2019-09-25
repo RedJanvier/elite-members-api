@@ -40,7 +40,7 @@ const checkAuth = (req, res, next) => {
 router.get('/', (req, res) => {
     start.init(db)(req, res)
 })
-router.post('/create', (req, res) => {
+router.post('/create', checkAuth, (req, res) => {
     create.handleCreate(db, bcrypt)(req, res)
 });
 router.put('/edit/:id', checkAuth, (req, res) => {
