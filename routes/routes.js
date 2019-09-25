@@ -1,8 +1,9 @@
 const express = require('express')
-const router  = express.Router();
+const router = express.Router();
 const bcrypt = require('bcrypt-nodejs');
 const knex = require('knex');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 const start = require('../controllers/start');
 const create = require('../controllers/create');
@@ -20,20 +21,36 @@ const db = knex({
 
 router.use(cors());
 
-router.get('/', (req, res) => { start.init(db)(req, res) })
-router.post('/create', (req, res) => { create.handleCreate(db, bcrypt)(req, res) });
-router.put('/edit/:id', (req, res) => { edit.handleEdit(db)(req, res) });
-router.post('/signin', (req, res) => { signin.handleSignIn(db, bcrypt)(req, res) });
-router.delete('/member/:id', (req, res) => { deletes.handleDelete(db)(req, res)});
-router.delete('/delete', (req, res) => { 
-    const emails = ["alain@gmail.com"]
-    emails.forEach(email => {
-        db('login').where({email})
-        .del()
-        .returning('email')
-        .then(console.log)
-        .catch(console.log)
-    })
+const checkAuth = (req, res, next) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const data = jwt.verify(token, 'elite-members-secret');
+
+        req.userData = data;
+        next();
+
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({
+            message: 'Authentication failed! FORBIDEN'
+        });
+    }
+};
+
+router.get('/', (req, res) => {
+    start.init(db)(req, res)
+})
+router.post('/create', checkAuth, (req, res) => {
+    create.handleCreate(db, bcrypt)(req, res)
+});
+router.put('/edit/:id', checkAuth, (req, res) => {
+    edit.handleEdit(db)(req, res)
+});
+router.post('/signin', (req, res) => {
+    signin.handleSignIn(db, bcrypt)(req, res)
+});
+router.delete('/member/:id', checkAuth, (req, res) => {
+    deletes.handleDelete(db)(req, res)
 });
 
 module.exports = router;
