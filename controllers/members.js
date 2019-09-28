@@ -52,7 +52,7 @@ const handleCreate = (req, res) => {
                 })
                 .returning('*')
                 .then(member => {
-                    console.log(req.userData.email + 'created a new user: ' + member[0].email);
+                    console.log(req.userData.email + ' created a new user: ' + member[0].email);
                     res.status(201).json(member[0])
                 })
                 .catch(err => res.status(500).json('Unable to register user'))
@@ -67,8 +67,10 @@ const handleDelete = (req, res) => {
         id
     } = req.params;
     const {
-        email
+        email,
+        committee
     } = req.body;
+    console.log(committee);
     if (id > 0 && validate.email(email)) {
         db('members')
             .where({
@@ -77,19 +79,19 @@ const handleDelete = (req, res) => {
             })
             .del()
             .returning('*')
-            .then((user) => {
-                console.log(`${req.userData.email} just deleted ${user[0].email}`);
-                if (user[0].committee && validate.email(user[0].email)) {
-                    db('login')
-                        .where('email', '=', user[0].email)
-                        .del()
-                        .returning('email')
-                        .then(rEmail => res.json(user[0].email + ' deleted password'))
-                        .catch(err => res.status(400).json("user doesn't have password"))
-                } else if (validate.email(user[0].email)) {
-                    res.json(user[0].email + ' was successfully deleted')
+            .then(() => {
+                console.log(`${req.userData.email} just deleted ${email}`);
+                if (typeof committee !== 'undefined' && validate.email(email)) {
+                    return db('login')
+                            .where('email', '=', email)
+                            .del()
+                            .returning('email')
+                            .then(() => res.status(200).json(email + ' deleted password'));
+
+                } else if (validate.email(email)) {
+                    return res.status(200).json(email + ' was successfully deleted')
                 } else {
-                    res.status(404).json('user not found');
+                    return res.status(404).json('member not found');
                 }
             })
             .catch(err => {
@@ -97,7 +99,7 @@ const handleDelete = (req, res) => {
                 res.status(404).json('member not found');
             })
     } else {
-        res.status(400).json('Failed to delete ' + email)
+        res.status(500).json('Failed to delete ' + email)
     }
 }
 
@@ -111,13 +113,16 @@ const handleEdit = (req, res) => {
             .increment('shares', 1)
             .returning('*')
             .then(user => {
-                console.log(`${req.userData.email} added a share to ${user.email}.`);
+                console.log(`${req.userData.email} added a share to ${user[0].email}.`);
                 res.status(201).json({
                     message: 'successfully added a share to ' + user[0].name,
                     shares_now: user[0].shares
                 })
             })
-            .catch(err => res.status(500).json('Error occurred, Try again'))
+            .catch(err => {
+                console.log(err);
+                res.status(500).json('Error occurred, Try again');
+            })
     } else if (String(req.body.do) === 'min' && id > 0) {
         db('members')
             .where('id', '=', id)
@@ -132,7 +137,7 @@ const handleEdit = (req, res) => {
                     })
                     .returning('*')
                     .then(user => {
-                        console.log(`${req.userData.email} removed a share to ${user.email}.`);
+                        console.log(`${req.userData.email} removed a share to ${user[0].email}.`);
                         res.status(201).json({
                             message: 'successfully removed a share from account of ' + user[0].name,
                             shares_now: user[0].shares
@@ -200,7 +205,7 @@ const init = (req, res) => {
         .then(users => res.json(users))
         .catch(err => {
             console.log(err);
-            res.status(400).json('Error getting members');
+            res.status(500).json('Error getting members');
         });
 }
 
