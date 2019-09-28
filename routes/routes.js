@@ -1,6 +1,6 @@
-const express = require('express')
-const router = express.Router();
+const router = require('express').Router();
 const cors = require('cors');
+
 const checkAuth = require('../controllers/validation').authenication;
 
 router.use(cors());

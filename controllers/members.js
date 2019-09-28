@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt-nodejs');
 const db = require('../config/db-config');
 const validate = require('./validation');
+const jwt = require('jsonwebtoken'); // for signing token sign
 
 const handleCreate = (req, res) => {
     const {
@@ -8,23 +9,27 @@ const handleCreate = (req, res) => {
         email,
         password,
         location,
-        committee
+        committee,
+        img
     } = req.body;
+
     if (validate.name(name) && validate.email(email)) {
         if (validate.password(password) && committee) {
             const hash = bcrypt.hashSync(password);
-            db('login').insert({
+            db('members').insert({
+                    name,
                     email,
-                    hash
+                    location,
+                    img: (typeof img !== 'undefined' || typeof img !== 'null') ? img : undefined,
+                    committee,
+                    joined: new Date()
+                    
                 })
                 .returning('email')
                 .then(eEmail => {
-                    return db('members').insert({
-                            name,
+                    return db('login').insert({
                             email: eEmail[0],
-                            location,
-                            committee,
-                            joined: new Date()
+                            hash
                         })
                         .returning('*')
                         .then(member => {
@@ -42,6 +47,7 @@ const handleCreate = (req, res) => {
                     name,
                     email,
                     location,
+                    img: (typeof img !== 'undefined' || typeof img !== 'null') ? img : undefined,
                     joined: new Date()
                 })
                 .returning('*')
@@ -163,7 +169,7 @@ const handleSignIn = (req, res) => {
                             const token = jwt.sign(user[0], "elite-members-secret", {
                                 expiresIn: "1h"
                             });
-                            return res.status(200).json({
+                            res.status(200).json({
                                 message: "you are successfully logged in",
                                 token
                             });
@@ -183,8 +189,6 @@ const handleSignIn = (req, res) => {
     } else {
         return res.status(404).json('invalid email');
     }
-
-    res.status(404).json('user not found');
 }
 
 const init = (req, res) => {
