@@ -1,15 +1,8 @@
-const express = require('express');
-const bp = require('body-parser');
-const cors = require('cors');
+const http = require('http');
+const PORT = process.env.PORT || 9000;
 
-const app = express();
 
-const PORT = process.env.PORT || 3000;
+const server = http.createServer(require('./app'));
 
-app.use(bp.json());
-app.use(cors());
-app.use('/api', require('./routes/routes'));
 
-app.listen(PORT, () => {
-    console.log('api is running on http://localhost:'+ PORT);
-})
+server.listen(PORT, () => console.log(`server started at http://localhost:${PORT}`));
