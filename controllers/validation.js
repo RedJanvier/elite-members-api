@@ -11,7 +11,7 @@ exports.password = (input) => {
 }
 
 exports.name = (input) => {
-    const regex = /^([A-Z]*[a-z]+)(\s[A-Z]*[a-z]+)*$/;
+    const regex = /^([A-Za-z\s])+$/;
     return regex.test(input);
 }
 
