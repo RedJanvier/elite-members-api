@@ -13,4 +13,4 @@ const db1 = knex({
     connection: 'postgres://postgres:Jannyda1.postgres@localhost:5432/elite'
 });
 
-module.exports = db1;
+module.exports = db;
