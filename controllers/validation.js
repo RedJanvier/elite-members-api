@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 exports.email = (address) => {
-    const regex = /^([-\w\d]{1,25})@([a-z]{4,15})\.([a-z]{2,5})(\.[a-z]{2,6})*$/;
+    const regex = /^([-\w\d]{1,25})@([a-z]{4,20})\.([a-z]{2,5})(\.[a-z]{2,6})*$/;
     return regex.test(address);
 }
 

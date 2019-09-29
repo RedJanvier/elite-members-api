@@ -22,8 +22,7 @@ const handleCreate = (req, res) => {
                     location,
                     img: (typeof img !== 'undefined' || typeof img !== 'null') ? img : undefined,
                     committee,
-                    joined: new Date()
-                    
+                    joined: new Date() 
                 })
                 .returning('email')
                 .then(eEmail => {
