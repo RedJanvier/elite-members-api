@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt-nodejs');
-const db = require('../config/db-config');
-const validate = require('./validation');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); // for signing token sign
+const validate = require('./validation');
+const db = require('../config/db-config');
 
 const handleCreate = (req, res) => {
     const {
@@ -20,7 +20,7 @@ const handleCreate = (req, res) => {
                     name,
                     email,
                     location,
-                    img: (typeof img !== 'undefined' || typeof img !== 'null') ? img : undefined,
+                    img: (typeof img !== 'undefined' || typeof img !== 'null') ? img : null,
                     committee,
                     joined: new Date() 
                 })
