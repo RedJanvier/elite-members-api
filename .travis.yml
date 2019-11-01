@@ -14,7 +14,7 @@ services:
   - postgresql
 before_script:
   - psql -c 'CREATE DATABASE elite;' -U postgres
-  -psql -c "create table login(
+  - psql -c "create table login(
     id serial not null PRIMARY KEY,
     hash varchar(255) not null unique,
     email varchar(200) not null unique
