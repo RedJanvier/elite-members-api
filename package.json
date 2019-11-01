@@ -7,7 +7,8 @@
     "start": "node server",
     "dev": "nodemon server",
     "test": "mocha __test__/*.test.js --exit",
-    "coverage": "nyc  --reporter=html --reporter=text npm run test"
+    "coverage": "nyc  --reporter=html --reporter=text npm run test",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [],
   "author": "RedJanvier",
@@ -23,8 +24,10 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "coveralls": "^3.0.7",
     "jest": "^24.9.0",
     "mocha": "^6.2.2",
+    "mocha-lcov-reporter": "^1.3.0",
     "nodemon": "^1.19.2",
     "nyc": "^14.1.1",
     "supertest": "^4.0.2"
