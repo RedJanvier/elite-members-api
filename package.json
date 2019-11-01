@@ -5,7 +5,9 @@
   "main": "script.js",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "test": "mocha __test__/*.test.js --exit",
+    "coverage": "nyc  --reporter=html --reporter=text npm run test"
   },
   "keywords": [],
   "author": "RedJanvier",
@@ -19,6 +21,12 @@
     "pg": "^7.12.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.2"
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "jest": "^24.9.0",
+    "mocha": "^6.2.2",
+    "nodemon": "^1.19.2",
+    "nyc": "^14.1.1",
+    "supertest": "^4.0.2"
   }
 }
