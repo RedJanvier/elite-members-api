@@ -2,10 +2,6 @@ sudo: false
 language: node_js
 node_js:
   - stable
-
-cache:
-  directories:
-    - node_modules
 install:
   - npm install
 notifications:
@@ -14,3 +10,7 @@ script:
   - 'npm run coverage'
 after_success:
   - 'npm run coveralls'
+services:
+  - postgresql
+before_script:
+  - psql -c 'CREATE DATABASE elite;' -U postgres
