@@ -10,7 +10,7 @@ const db = knex({
 
 const db1 = knex({
   client: 'pg',
-  connection: 'postgres://postgres:Jannyda1.postgres@localhost:5432/elite'
+  connection: 'postgres://postgres:<password>.postgres@localhost:5432/dbname'
 });
 
 module.exports = db1;
