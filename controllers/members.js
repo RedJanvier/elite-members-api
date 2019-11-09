@@ -63,72 +63,50 @@ const signin = (req, res) => {
 };
 
 const create = (req, res) => {
-  const { name, email, password, location, committee, img } = req.body;
+  const { name, email, password, location, committee, img, shares } = req.body;
 
-  if (validate.name(name) && validate.email(email)) {
-    if (validate.password(password) && committee) {
-      const hash = bcrypt.hashSync(password);
-      db('members')
-        .insert({
-          name,
-          email,
-          location,
-          img: typeof img !== 'undefined' || typeof img !== 'null' ? img : null,
-          committee,
-          joined: new Date()
-        })
-        .returning('email')
-        .then(eEmail => {
-          return db('login')
-            .insert({
-              email: eEmail[0],
-              hash
-            })
-            .returning('*')
-            .then(member => {
-              console.log(
-                req.userData.email + 'created a new user: ' + member[0].email
-              );
-              res.status(201).json(member[0]);
+  const hash = typeof password === 'string' ? bcrypt.hashSync(password, 10) : null;
+  db('members')
+    .insert({
+      name,
+      email,
+      shares,
+      location,
+      img: typeof img !== 'undefined' || typeof img !== 'null' ? img : null,
+      committee
+    })
+    .returning('id')
+    .then(id => {
+      if (hash && committee) {
+        return db('login')
+          .insert({ member_id: id[0], hash })
+          .then(member => {
+            console.log(`${req.userData.email} created a new user: ${member[0].member_id}`);
+            res.status(201).json({ 
+              success: true, 
+              message: 'Member created successfully' 
             });
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(500).json({
-            message: 'Unable to register user'
           });
-        });
-    } else {
-      return db('members')
-        .insert({
-          name,
-          email,
-          location,
-          img:
-            typeof img !== 'undefined' || typeof img !== 'null'
-              ? img
-              : undefined,
-          joined: new Date()
-        })
-        .returning('*')
-        .then(member => {
-          console.log(
-            req.userData.email + ' created a new user: ' + member[0].email
-          );
-          res.status(201).json(member[0]);
-        })
-        .catch(err => res.status(500).json('Unable to register user'));
-    }
-  } else {
-    res.status(500).json('unable to register');
-  }
+      }
+      res.status(201).json({
+        success: true,
+        message: 'Member created successfully'
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        message: 'Unable to register user'
+      });
+    });
 };
 
 const remove = (req, res) => {
   const { id } = req.params;
   const { email, committee } = req.body;
   console.log(committee);
-  if (id > 0 && validate.email(email)) {
+  if (id > 0 && validation.checkEmail(email)) {
     db('members')
       .where({
         id: id,
@@ -138,13 +116,13 @@ const remove = (req, res) => {
       .returning('*')
       .then(() => {
         console.log(`${req.userData.email} just deleted ${email}`);
-        if (typeof committee !== 'undefined' && validate.email(email)) {
+        if (typeof committee !== 'undefined' && validation.email(email)) {
           return db('login')
             .where('email', '=', email)
             .del()
             .returning('email')
             .then(() => res.status(200).json(email + ' deleted password'));
-        } else if (validate.email(email)) {
+        } else if (validation.email(email)) {
           return res.status(200).json(email + ' was successfully deleted');
         } else {
           return res.status(404).json('member not found');
