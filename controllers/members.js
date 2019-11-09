@@ -131,37 +131,17 @@ setTimeout(() => {
 
 const remove = (req, res) => {
   const { id } = req.params;
-  const { email, committee } = req.body;
-  console.log(committee);
-  if (id > 0 && validation.checkEmail(email)) {
     db('members')
-      .where({
-        id: id,
-        email: email
-      })
+      .where({ id })
       .del()
-      .returning('*')
       .then(() => {
-        console.log(`${req.userData.email} just deleted ${email}`);
-        if (typeof committee !== 'undefined' && validation.email(email)) {
-          return db('login')
-            .where('email', '=', email)
-            .del()
-            .returning('email')
-            .then(() => res.status(200).json(email + ' deleted password'));
-        } else if (validation.email(email)) {
-          return res.status(200).json(email + ' was successfully deleted');
-        } else {
-          return res.status(404).json('member not found');
-        }
+        console.log(`${req.userData.email} just deleted a Member`);
+        res.status(200).json({ success: true, message: `${req.userData.email} just deleted a Member` });
       })
       .catch(err => {
         console.log(err);
-        res.status(404).json('member not found');
+        res.status(404).json({ success: false, message: 'member not found'});
       });
-  } else {
-    res.status(500).json('Failed to delete ' + email);
-  }
 };
 
 module.exports = {

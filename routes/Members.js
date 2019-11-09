@@ -7,6 +7,6 @@ router.get('/', (req, res, next) => member.init(req, res));
 router.post('/signin', (req, res, next) => member.signin(req, res));
 router.post('/create', authentication, (req, res, next) => member.create(req, res));
 router.patch('/:id', authentication, (req, res, next) => member.edit(req, res));
-// router.delete('/:id', authentication, (req, res, next) => member.remove(req, res));
+router.delete('/:id', authentication, (req, res, next) => member.remove(req, res));
 
 module.exports = router;
