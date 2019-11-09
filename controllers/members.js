@@ -1,9 +1,68 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken'); // for signing token sign
-const validate = require('./validation');
+const jwt = require('jsonwebtoken');
 const db = require('../config/db-config');
+const { validation } = require('../utils/validation');
 
-const handleCreate = (req, res) => {
+const init = (req, res) => {
+  db('members')
+    .select('*')
+    .orderBy('name', 'asc')
+    .then(users => res.status(200).json({
+      success: true,
+      count: users.length,
+      users
+    }))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ success: false, error: 'Unable to GET users! Try again' });
+    });
+};
+
+const single = (req, res) => {
+  const { id } = req.params;
+  db('members')
+    .select('*')
+    .where({ id: id })
+    .then(user => res.status(200).json({
+      success: true,
+      user: user[0]
+    }))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ success: false, error: 'Unable to GET users! Try again' });
+    });
+};
+
+const signin = (req, res) => {
+  const { email, password } = req.body;
+
+    db('login')
+      .join('members', 'login.member_id', 'members.id')
+      .select('members.email as email', 'login.hash as hash', 'members.name as name', 'members.committee as committe', 'members.location as location')
+      .where('email', '=', email)
+      .then(data => {
+        const user = data[0];
+
+        if (bcrypt.compareSync(password, user.hash)) {
+          const token = jwt.sign({
+            email: user.email,
+            name: user.name,
+            committee: user.committee,
+            location: user.location
+          }, 'elite-members-secret', { expiresIn: '2h' });
+          return res.status(200).json({ success: true, token });
+        } else {
+          res.status(401).json({ success: false, message: 'Email or Password wrong' });
+        }
+
+      })
+      .catch(err => {
+        console.log(err);
+        return res.status(400).json({ success: false, message: 'wrong credentials' });
+      });
+};
+
+const create = (req, res) => {
   const { name, email, password, location, committee, img } = req.body;
 
   if (validate.name(name) && validate.email(email)) {
@@ -65,7 +124,7 @@ const handleCreate = (req, res) => {
   }
 };
 
-const handleDelete = (req, res) => {
+const remove = (req, res) => {
   const { id } = req.params;
   const { email, committee } = req.body;
   console.log(committee);
@@ -100,7 +159,7 @@ const handleDelete = (req, res) => {
   }
 };
 
-const handleEdit = (req, res) => {
+const edit = (req, res) => {
   const { id } = req.params;
   if (String(req.body.do) === 'add' && id > 0) {
     db('members')
@@ -151,61 +210,13 @@ const handleEdit = (req, res) => {
   }
 };
 
-const handleSignIn = (req, res) => {
-  const { email, password } = req.body;
 
-  if (validate.email(email)) {
-    db.select('email', 'hash')
-      .from('login')
-      .where('email', '=', email)
-      .returning('*')
-      .then(data => {
-        const isValid = bcrypt.compareSync(password, data[0].hash);
-        if (isValid) {
-          db.select('*')
-            .from('members')
-            .where('email', '=', email)
-            .then(user => {
-              const token = jwt.sign(user[0], 'elite-members-secret', {
-                expiresIn: '1h'
-              });
-              res.status(200).json({
-                message: 'you are successfully logged in',
-                token
-              });
-            })
-            .catch(err => {
-              console.log(err);
-              return res.status(404).json('user not found');
-            });
-        } else {
-          return res.status(403).json('wrong credentials! FORBIDEN');
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        return res.status(403).json('wrong credentials! FORBIDEN');
-      });
-  } else {
-    return res.status(404).json('invalid email');
-  }
-};
-
-const init = (req, res) => {
-  db.select('*')
-    .from('members')
-    .orderBy('name', 'asc')
-    .then(users => res.status(200).json(users))
-    .catch(err => {
-      console.log(err);
-      return res.status(500).json('Error getting members');
-    });
-};
 
 module.exports = {
   init,
-  handleSignIn,
-  handleEdit,
-  handleDelete,
-  handleCreate
+  single,
+  signin,
+  edit,
+  remove,
+  create
 };

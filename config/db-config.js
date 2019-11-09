@@ -1,4 +1,7 @@
 const knex = require('knex');
+const { config } = require('dotenv');
+
+config();
 
 const db = knex({
   client: 'pg',
@@ -8,9 +11,4 @@ const db = knex({
   }
 });
 
-const db1 = knex({
-  client: 'pg',
-  connection: 'postgres://postgres:<password>.postgres@localhost:5432/dbname'
-});
-
-module.exports = db1;
+module.exports = db;
