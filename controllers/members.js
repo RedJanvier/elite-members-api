@@ -102,6 +102,33 @@ const create = (req, res) => {
     });
 };
 
+
+const edit = async (req, res) => {
+  const { id } = req.params;
+  const { act } = req.body;
+  let msg;
+
+  act === 'add' 
+  ? db('members')
+    .where('id', '=', id)
+    .increment('shares', 1)
+    .returning('*')
+    .then(user => { msg = `${req.userData.email} added a share to ${user[0].email}.`; console.log(msg); })
+    .catch(err => console.log(err))
+
+  : db('members')
+    .where('id', '=', id)
+    .decrement('shares', 1)
+    .returning('*')
+    .then(user => { msg = `${req.userData.email} removed a share to ${user[0].email}.`; console.log(msg); })
+    .catch(err => console.log(err));
+
+setTimeout(() => {
+  res.status(200).json({ success: true, message: msg });
+},200);
+
+};
+
 const remove = (req, res) => {
   const { id } = req.params;
   const { email, committee } = req.body;
@@ -136,59 +163,6 @@ const remove = (req, res) => {
     res.status(500).json('Failed to delete ' + email);
   }
 };
-
-const edit = (req, res) => {
-  const { id } = req.params;
-  if (String(req.body.do) === 'add' && id > 0) {
-    db('members')
-      .where('id', '=', id)
-      .increment('shares', 1)
-      .returning('*')
-      .then(user => {
-        console.log(`${req.userData.email} added a share to ${user[0].email}.`);
-        res.status(201).json({
-          message: 'successfully added a share to ' + user[0].name,
-          shares_now: user[0].shares
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json('Error occurred, Try again');
-      });
-  } else if (String(req.body.do) === 'min' && id > 0) {
-    db('members')
-      .where('id', '=', id)
-      .returning('shares')
-      .then(user => {
-        const newShares = user[0].shares - 1;
-
-        return db('members')
-          .where('id', '=', id)
-          .update({
-            shares: newShares
-          })
-          .returning('*')
-          .then(user => {
-            console.log(
-              `${req.userData.email} removed a share to ${user[0].email}.`
-            );
-            res.status(201).json({
-              message:
-                'successfully removed a share from account of ' + user[0].name,
-              shares_now: user[0].shares
-            });
-          });
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json('Error occurred, Try again');
-      });
-  } else {
-    res.status(400).json('UNKOWN REQUEST');
-  }
-};
-
-
 
 module.exports = {
   init,
