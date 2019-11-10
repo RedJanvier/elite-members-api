@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 
-const email = new RegExp('/^([-\w\d]{1,25})@([a-z]{4,20})\.([a-z]{2,5})(\.[a-z]{2,6})*$/');
+const email = /^([-\w\d]{1,25})@([a-z]{4,20})\.([a-z]{2,5})(\.[a-z]{2,6})*$/;
 const password = /^([\w\d-#\$%\^&\*\(\)@\!\/\.\?~,]{8,20})$/;
-const name = new RegExp('/ ^ ([A - Z] * [a - z] +)(\s[a - z] +) * $ /');
+const name = '/^([A-Z]*[a-z]+)(\s[a-z]+)*$/';
 
 class validation {
     static checkEmail(mail){email.test(mail);}
@@ -15,10 +15,8 @@ const authentication = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
         const data = jwt.verify(token, 'elite-members-secret');
-
         req.member = data;
         next();
-
     } catch (err) {
         console.log(err);
         res.status(401).json({
