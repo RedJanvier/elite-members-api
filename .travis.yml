@@ -39,3 +39,5 @@ before_script:
 
   - psql -c "INSERT INTO login (hash, member_id, member_email) VALUES
       ('$2a$10$si3eGwiNW0D/tguNcKsDgegE9VdlPyp5OqO0uEq6U/B2fVYKO0QKe', 1, 'alainyern@gmail.com');" -U postgres
+
+  - psql -c "SELECT * FROM members;" -U postgres
