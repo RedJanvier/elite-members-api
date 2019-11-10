@@ -35,10 +35,10 @@ const single = (req, res) => {
 const signin = (req, res) => {
   const { email, password } = req.body;
 
-    db('login')
-      .join('members', 'login.member_id', 'members.id')
-      .select('members.email as email', 'login.hash as hash', 'members.id as id', 'members.name as name', 'members.committee as committe', 'members.location as location')
-      .where('email', '=', email)
+    db('members')
+      .join('login', 'members.id', 'login.member_id')
+      .select('login.hash as hash', 'members.id as id', 'members.name as name', 'members.committee as committe', 'members.location as location')
+      .where('members.email', '=', email)
       .then(data => {
         if (bcrypt.compareSync(password, data[0].hash)) {
           const token = jwt.sign({
