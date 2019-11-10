@@ -28,6 +28,7 @@ before_script:
 
     INSERT INTO members (name, email, location, shares, committee) VALUES
       ('Alain NIYONEMA', 'alainyern@gmail.com', 'ETE Year 3', 7, 'IT Manager');
+      
 
     CREATE TABLE IF NOT EXISTS login (
       id serial NOT NULL PRIMARY KEY,
