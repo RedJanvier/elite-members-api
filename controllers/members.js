@@ -100,7 +100,7 @@ const create = (req, res) => {
     });
 };
 
-const edit = async (req, res) => {
+const edit = (req, res) => {
   const { id } = req.params;
   const { act } = req.body;
   const job = act === 'add' ? 'increment' : 'decrement';
