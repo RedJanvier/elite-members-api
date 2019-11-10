@@ -3,9 +3,8 @@ const jwt = require('jsonwebtoken');
 const db = require('../config/db-config');
 
 const init = (req, res) => {
-  console.log(process.env.DATABASE_URL);
-  db('members')
-    .select('*')
+  db.select('*')
+    .from('members')
     .orderBy('name', 'asc')
     .then(users => res.status(200).json({
       success: true,
