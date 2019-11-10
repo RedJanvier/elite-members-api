@@ -8,8 +8,6 @@ notifications:
   email: false
 script:
   - 'npm run coverage'
-after_success:
-  - 'npm run coveralls'
 services:
   - postgresql
 before_script:
