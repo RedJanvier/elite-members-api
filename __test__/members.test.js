@@ -77,3 +77,28 @@ describe('[ POST /api/v2/members/signin ] signin member', () => {
       });
   });
 });
+
+// describe('[ POST /api/v2/members/create ] create a member', () => {
+//   it('returns an object of with a message', done => {
+//     chai
+//       .request(app)
+//       .post('/api/v2/members/create')
+//       .set('Content-Type', 'application/json; charset=utf-8')
+//       .send({ 
+//         'email': 'janvierntwali@gmail.com', 
+//         'name': 'Janvier HABIYAREMYE', 
+//         'shares': 5, 
+//         'location': 'ETE Year 3' 
+//       })
+//       .end((err, res) => {
+//         res.should.have.status(201);
+//         res.body.should.be.a('object');
+//         res.body.should.include.keys('success', 'message');
+//         res.body.success.should.be.true;
+//         res.body.message.should.be.a('string');
+//         res.body.message.should.eql('Member created successfully');
+//         if (err) console.log(err);
+//         done();
+//       });
+//   });
+// });
