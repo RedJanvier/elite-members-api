@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../config/db-config');
-const { validation } = require('../utils/validation');
 
 const init = (req, res) => {
   db('members')
@@ -38,17 +37,16 @@ const signin = (req, res) => {
 
     db('login')
       .join('members', 'login.member_id', 'members.id')
-      .select('members.email as email', 'login.hash as hash', 'members.name as name', 'members.committee as committe', 'members.location as location')
+      .select('members.email as email', 'login.hash as hash', 'members.id as id', 'members.name as name', 'members.committee as committe', 'members.location as location')
       .where('email', '=', email)
       .then(data => {
-        const user = data[0];
-
-        if (bcrypt.compareSync(password, user.hash)) {
+        if (bcrypt.compareSync(password, data[0].hash)) {
           const token = jwt.sign({
-            email: user.email,
-            name: user.name,
-            committee: user.committee,
-            location: user.location
+            id: data[0].id,
+            email: data[0].email,
+            name: data[0].name,
+            committee: data[0].committee,
+            location: data[0].location
           }, 'elite-members-secret', { expiresIn: '2h' });
           return res.status(200).json({ success: true, token });
         } else {
@@ -113,14 +111,14 @@ const edit = async (req, res) => {
     .where('id', '=', id)
     .increment('shares', 1)
     .returning('*')
-    .then(user => { msg = `${req.userData.email} added a share to ${user[0].email}.`; console.log(msg); })
+    .then(user => { msg = `${req.member.email} added a share to ${user[0].email}.`; console.log(msg); })
     .catch(err => console.log(err))
 
   : db('members')
     .where('id', '=', id)
     .decrement('shares', 1)
     .returning('*')
-    .then(user => { msg = `${req.userData.email} removed a share to ${user[0].email}.`; console.log(msg); })
+    .then(user => { msg = `${req.member.email} removed a share to ${user[0].email}.`; console.log(msg); })
     .catch(err => console.log(err));
 
 setTimeout(() => {

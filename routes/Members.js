@@ -1,12 +1,14 @@
 const express = require('express')
-const router = express.Router();
-const member = require('../controllers/members');
+const Member = require('../controllers/members');
 const { authentication } = require('../utils/validation');
 
-router.get('/', (req, res, next) => member.init(req, res));
-router.post('/signin', (req, res, next) => member.signin(req, res));
-router.post('/create', authentication, (req, res, next) => member.create(req, res));
-router.patch('/:id', authentication, (req, res, next) => member.edit(req, res));
-router.delete('/:id', authentication, (req, res, next) => member.remove(req, res));
+const router = express.Router();
+
+router.get('/', Member.init);
+router.get('/:id', Member.single);
+router.post('/signin', Member.signin);
+router.post('/create', authentication, Member.create);
+router.patch('/:id', authentication, Member.edit);
+router.delete('/:id', authentication, Member.remove);
 
 module.exports = router;

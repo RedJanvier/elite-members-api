@@ -16,7 +16,7 @@ const authentication = (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
         const data = jwt.verify(token, 'elite-members-secret');
 
-        req.userData = data;
+        req.member = data;
         next();
 
     } catch (err) {
