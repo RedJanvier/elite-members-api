@@ -11,10 +11,10 @@ const members = `CREATE TABLE IF NOT EXISTS members (
     img VARCHAR(255) default 'https://firebasestorage.googleapis.com/v0/b/learn-firebase-bbe9f.appspot.com/o/profiles%2Falain%40gmail.com.jpg?alt=media&token=2a01735f-6560-45ef-86b2-b6536dcfcb40'
 );
 
-INTO members (name, email, location, shares, committee) VALUES
+INSERT INTO members (name, email, location, shares, committee) VALUES
     ('Alain NIYONEMA', 'alainyern@gmail.com', 'ETE Year 3', 7, 'IT Manager');`;
 
-const login = `CREATE TABLE login (
+const login = `CREATE TABLE IF NOT EXISTS login (
     id serial NOT NULL PRIMARY KEY,
     hash varchar(255) NOT NULL UNIQUE,
     member_id INTEGER NOT NULL UNIQUE REFERENCES members(id) ON DELETE CASCADE,
