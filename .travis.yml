@@ -11,6 +11,8 @@ script:
 services:
   - postgresql
 before_script:
+  - psql -c "CREATE DATABASE elite;" -U postgres
+  - psql -c "CREATE USER RedJanvier WITH PASSWORD 'Jannyda1';" -U postgres
   - psql -c "CREATE TABLE IF NOT EXISTS members (
       id SERIAL NOT NULL PRIMARY KEY,
       name VARCHAR(255) NOT NULL, 
