@@ -21,7 +21,7 @@ const single = (req, res) => {
   const { id } = req.params;
   db('members')
     .select('*')
-    .where({ id: id })
+    .where({ id })
     .then(user => res.status(200).json({
       success: true,
       user: user[0]
@@ -37,13 +37,13 @@ const signin = (req, res) => {
 
     db('members')
       .join('login', 'members.id', 'login.member_id')
-      .select('login.hash as hash', 'members.id as id', 'members.name as name', 'members.committee as committe', 'members.location as location')
+      .select('login.hash as hash', 'members.id as id', 'members.name as name', 'members.committee as committee', 'members.location as location')
       .where('members.email', '=', email)
       .then(data => {
         if (bcrypt.compareSync(password, data[0].hash)) {
           const token = jwt.sign({
             id: data[0].id,
-            email: data[0].email,
+            email: email,
             name: data[0].name,
             committee: data[0].committee,
             location: data[0].location
@@ -100,31 +100,23 @@ const create = (req, res) => {
     });
 };
 
-
 const edit = async (req, res) => {
   const { id } = req.params;
   const { act } = req.body;
-  let msg;
+  const job = act === 'add' ? 'increment' : 'decrement';
 
-  act === 'add' 
-  ? db('members')
-    .where('id', '=', id)
-    .increment('shares', 1)
+  db('members')
+    .where({ id })[job]('shares', 1)
     .returning('*')
-    .then(user => { msg = `${req.member.email} added a share to ${user[0].email}.`; console.log(msg); })
-    .catch(err => console.log(err))
-
-  : db('members')
-    .where('id', '=', id)
-    .decrement('shares', 1)
-    .returning('*')
-    .then(user => { msg = `${req.member.email} removed a share to ${user[0].email}.`; console.log(msg); })
-    .catch(err => console.log(err));
-
-setTimeout(() => {
-  res.status(200).json({ success: true, message: msg });
-},200);
-
+    .then(user => {
+      const msg = `${req.member.email} ${job}ed a share to ${user[0].email}.`; 
+      console.log(msg); 
+      res.status(200).json({ success: true, message: msg });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ success: false, message: `Request failed to edit the user ${id}` });
+    });
 };
 
 const remove = (req, res) => {
