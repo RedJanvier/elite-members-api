@@ -70,7 +70,7 @@ const create = (req, res) => {
       email,
       shares,
       location,
-      img: typeof img !== 'undefined' || typeof img !== 'null' ? img : null,
+      img: typeof img === 'string' ? img : null,
       committee
     })
     .returning('id')
