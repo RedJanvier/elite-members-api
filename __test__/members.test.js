@@ -5,7 +5,7 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 chai.should();
 
-describe('[ GET /api/v2/members/:id ] get all members and count', () => {
+describe('[ GET /api/v2/members ] get all members and count', () => {
   it('returns an array of all members', done => {
     chai
       .request(app)

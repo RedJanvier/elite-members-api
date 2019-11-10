@@ -13,7 +13,6 @@ after_success:
 services:
   - postgresql
 before_script:
-  - psql -c 'CREATE DATABASE elite;' -U postgres
   - psql -c "CREATE TABLE IF NOT EXISTS members (
       id SERIAL NOT NULL PRIMARY KEY,
       name VARCHAR(255) NOT NULL, 
@@ -41,3 +40,5 @@ before_script:
       ('$2a$10$si3eGwiNW0D/tguNcKsDgegE9VdlPyp5OqO0uEq6U/B2fVYKO0QKe', 1, 'alainyern@gmail.com');" -U postgres
 
   - psql -c "SELECT * FROM members;" -U postgres
+  - psql -c "\l" -U postgres
+  - psql -c "\d" -U postgres
