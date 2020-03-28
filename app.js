@@ -12,14 +12,14 @@ app.use(morgan('dev'));
 
 app.use('/api/v2/members/', require('./routes/Members'));
 
-app.use((req, res, next) => {
+app.use((req, res, next) =>
     res.status(404).json({
         message: 'Route not FOUND!',
         try: {
             method: 'GET',
             endpoint: 'http://localhost:3000/api/v2/members/'
         }
-    });
-});
+    })
+);
 
 module.exports = app;
