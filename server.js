@@ -1,5 +1,5 @@
-const { config } = require('dotenv');
-const http = require('http');
+import { config } from 'dotenv';
+import http from 'http';
 const PORT = process.env.PORT || 3000;
 
 config();
@@ -7,7 +7,7 @@ config();
 const server = http.createServer(require('./app'));
 
 server.listen(PORT, () =>
-  console.log(`server started at http://localhost:${PORT}`)
+    console.log(`server started at http://localhost:${PORT}`)
 );
 
-module.exports = server;
+export default server;

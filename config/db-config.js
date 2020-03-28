@@ -1,14 +1,14 @@
-const knex = require('knex');
-const { config } = require('dotenv');
+import knex from 'knex';
+import { config } from 'dotenv';
 
 config();
 
 const db = knex({
-  client: 'pg',
-  connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssh: true
-  }
+    client: 'pg',
+    connection: {
+        connectionString: process.env.DATABASE_URL,
+        ssh: true
+    }
 });
 
-module.exports = db;
+export default db;

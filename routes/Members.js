@@ -1,6 +1,6 @@
-const express = require('express')
-const Member = require('../controllers/members');
-const { authentication } = require('../utils/validation');
+import express from 'express';
+import * as Member from '../controllers/members';
+import { authentication } from '../utils/validation';
 
 const router = express.Router();
 
@@ -11,4 +11,4 @@ router.post('/create', authentication, Member.create);
 router.patch('/:id', authentication, Member.edit);
 router.delete('/:id', authentication, Member.remove);
 
-module.exports = router;
+export default router;

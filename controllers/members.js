@@ -1,8 +1,8 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const db = require('../config/db-config');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import db from '../config/db-config';
 
-const init = async (req, res) => {
+export const init = async (req, res) => {
     try {
         const users = await db
             .select('*')
@@ -22,7 +22,7 @@ const init = async (req, res) => {
     }
 };
 
-const single = async (req, res) => {
+export const single = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await db('members')
@@ -41,7 +41,7 @@ const single = async (req, res) => {
     }
 };
 
-const signin = async (req, res) => {
+export const signin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -84,7 +84,7 @@ const signin = async (req, res) => {
     }
 };
 
-const create = async (req, res) => {
+export const create = async (req, res) => {
     try {
         const {
             name,
@@ -129,7 +129,7 @@ const create = async (req, res) => {
     }
 };
 
-const edit = async (req, res) => {
+export const edit = async (req, res) => {
     try {
         const { id } = req.params;
         const { act } = req.body;
@@ -152,7 +152,7 @@ const edit = async (req, res) => {
     }
 };
 
-const remove = async (req, res) => {
+export const remove = async (req, res) => {
     try {
         const { id } = req.params;
         await db('members')
@@ -171,13 +171,4 @@ const remove = async (req, res) => {
             message: 'member not found'
         });
     }
-};
-
-module.exports = {
-    init,
-    single,
-    signin,
-    edit,
-    remove,
-    create
 };

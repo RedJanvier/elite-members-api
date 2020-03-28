@@ -1,7 +1,8 @@
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
-const { config } = require('dotenv');
+import express from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
+import { config } from 'dotenv';
+import memberRoutes from './routes/Members';
 const app = express();
 
 config();
@@ -10,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
 
-app.use('/api/v2/members/', require('./routes/Members'));
+app.use('/api/v2/members/', memberRoutes);
 
 app.use((req, res, next) =>
     res.status(404).json({
@@ -22,4 +23,4 @@ app.use((req, res, next) =>
     })
 );
 
-module.exports = app;
+export default app;
