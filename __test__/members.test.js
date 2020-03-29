@@ -1,47 +1,49 @@
-// import server from '../server';
-// import chai from 'chai';
-// import chaiHttp from 'chai-http';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import server from '../server';
 
-// const app = server;
+const app = server;
 
-// chai.use(chaiHttp);
-// chai.should();
+chai.use(chaiHttp);
+chai.should();
 
-// describe('[ GET /api/v2/members ] get all members and count', () => {
-//     it('returns an array of all members', done => {
-//         chai.request(app)
-//             .get('/api/v2/members')
-//             .end((err, res) => {
-//                 res.should.have.status(200);
-//                 res.body.users.should.be.a('array');
-//                 if (err) console.log(err);
-//                 done();
-//             });
-//     });
+describe('[ GET /api/v2/members ] get all members and count', () => {
+  it('returns an array of all members', done => {
+    chai
+      .request(app)
+      .get('/api/v2/members')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.users.should.be.a('array');
+        if (err) console.log(err);
+        done();
+      });
+  });
 
-//     it('returns all members and count members', done => {
-//         chai.request(app)
-//             .get('/api/v2/members')
-//             .end((err, res) => {
-//                 res.body.count.should.be.a('number');
-//                 res.body.count.should.be.gte(0);
-//                 res.body.users.forEach(member => {
-//                     member.should.be.a('object');
-//                     member.should.include.keys(
-//                         'id',
-//                         'email',
-//                         'shares',
-//                         'created_at',
-//                         'location',
-//                         'name',
-//                         'img'
-//                     );
-//                 });
-//                 if (err) console.log(err);
-//                 done();
-//             });
-//     });
-// });
+  it('returns all members and count members', done => {
+    chai
+      .request(app)
+      .get('/api/v2/members')
+      .end((err, res) => {
+        res.body.count.should.be.a('number');
+        res.body.count.should.be.gte(0);
+        res.body.users.forEach(member => {
+          member.should.be.a('object');
+          member.should.include.keys(
+            'id',
+            'email',
+            'shares',
+            'created_at',
+            'location',
+            'name',
+            'img'
+          );
+        });
+        if (err) console.log(err);
+        done();
+      });
+  });
+});
 
 // describe('[ GET /api/v2/members/:id ] get a single member', () => {
 //     it('returns an object of the member', done => {

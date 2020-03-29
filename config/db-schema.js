@@ -1,5 +1,4 @@
-
-const members = `CREATE TABLE IF NOT EXISTS members (
+export const members = `CREATE TABLE IF NOT EXISTS members (
     id SERIAL NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL, 
     email VARCHAR(200) NOT NULL UNIQUE,
@@ -14,7 +13,7 @@ const members = `CREATE TABLE IF NOT EXISTS members (
 INSERT INTO members (name, email, location, shares, committee) VALUES
     ('Alain NIYONEMA', 'alainyern@gmail.com', 'ETE Year 3', 7, 'IT Manager');`;
 
-const login = `CREATE TABLE IF NOT EXISTS login (
+export const login = `CREATE TABLE IF NOT EXISTS login (
     id serial NOT NULL PRIMARY KEY,
     hash varchar(255) NOT NULL UNIQUE,
     member_id INTEGER NOT NULL UNIQUE REFERENCES members(id) ON DELETE CASCADE,
