@@ -4,9 +4,9 @@ import cors from 'cors';
 import { config } from 'dotenv';
 import memberRoutes from './routes/Members';
 
-const app = express();
-
 config();
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors());
@@ -22,6 +22,10 @@ app.use((req, res) =>
       endpoint: 'http://localhost:3000/api/v2/members/',
     },
   })
+);
+
+app.listen(PORT, () =>
+  console.log(`server started at http://localhost:${PORT}`)
 );
 
 export default app;
