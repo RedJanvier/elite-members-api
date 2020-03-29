@@ -2,11 +2,11 @@
     "name": "elite-api",
     "version": "2.0.0",
     "description": "",
-    "main": "script.js",
+    "main": "server.js",
     "scripts": {
         "start": "babel-node server",
         "dev": "nodemon --exec babel-node server",
-        "test": "mocha __test__/*.test.js --exit",
+        "test": "mocha --require @babel/register __test__/*.test.js --exit",
         "coverage": "nyc  --reporter=html --reporter=text npm run test",
         "coveralls": "nyc report --reporter=text-lcov | coveralls"
     },
@@ -18,6 +18,8 @@
         "@babel/core": "^7.9.0",
         "@babel/node": "^7.8.7",
         "@babel/preset-env": "^7.9.0",
+        "@babel/register": "^7.9.0",
+        "@babel/runtime": "^7.9.2",
         "bcrypt": "^3.0.6",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
@@ -28,6 +30,7 @@
         "pg": "^7.12.0"
     },
     "devDependencies": {
+        "@babel/plugin-transform-runtime": "^7.9.0",
         "chai": "^4.2.0",
         "chai-http": "^4.3.0",
         "coveralls": "^3.0.7",
