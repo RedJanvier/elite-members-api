@@ -1,10 +1,15 @@
+sudo: false
+
 language: node_js
 
 env:
   - DB=postgres://redjanvier:123456@localhost/elite
 
 node_js:
-  - 'stable'
+  - node
+
+notifications:
+  email: false
 
 cache:
   npm: false
@@ -18,8 +23,9 @@ before_script:
   - psql -c "CREATE USER RedJanvier WITH LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT NOREPLICATION CONNECTION LIMIT -1 PASSWORD '123456'" -U postgres
 
 script:
+  - npm run lint
   - npm test
 
 after_success:
   - psql -c 'DROP DATABASE elite;' -U postgres
-#     - npm run coveralls
+  - npm run coveralls
