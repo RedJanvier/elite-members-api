@@ -6,7 +6,7 @@
   "scripts": {
     "start": "babel-node app",
     "dev": "nodemon --exec babel-node app",
-    "test": "cross-env NODE_ENV=test npm run migrate && cross-env NODE_ENV=test npm run seed && cross-env NODE_ENV=test mocha --require @babel/register __test__/*.test.js --timeout 10000 --exit",
+    "test": "(dropdb --if-exists test_elite && createdb test_elite ) && cross-env NODE_ENV=test npm run migrate && cross-env NODE_ENV=test npm run seed && cross-env NODE_ENV=test mocha --require @babel/register __test__/*.test.js --timeout 10000 --exit",
     "lint": "eslint **/*.js",
     "seed": "node_modules/.bin/knex seed:run",
     "lint:fix": "prettier-eslint '**/*.js' --write",

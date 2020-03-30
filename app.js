@@ -2,7 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import { config } from 'dotenv';
-import memberRoutes from './routes/Members';
+import routes from './routes/index';
 
 config();
 const app = express();
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
 
-app.use('/api/v2/members/', memberRoutes);
+app.use('/api/v2/', routes);
 
 app.use((req, res) =>
   res.status(404).json({
