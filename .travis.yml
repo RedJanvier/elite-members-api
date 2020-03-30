@@ -23,9 +23,8 @@ before_script:
   - psql -c "CREATE USER RedJanvier WITH LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT NOREPLICATION CONNECTION LIMIT -1 PASSWORD '123456'" -U postgres
 
 script:
-  - npm run lint
   - npm test
 
 after_success:
-  - psql -c 'DROP DATABASE elite;' -U postgres
   - npm run coveralls
+  - psql -c 'DROP DATABASE elite;' -U postgres
