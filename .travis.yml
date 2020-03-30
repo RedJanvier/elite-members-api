@@ -2,6 +2,7 @@ language: node_js
 
 env:
   - DB=postgres://redjanvier:123456@localhost/elite
+  - SECRET=elite-members-secret
 
 node_js:
   - 'stable'
