@@ -3,5 +3,7 @@
 [![DeepScan grade](https://deepscan.io/api/teams/6051/projects/7911/branches/87930/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=6051&pid=7911&bid=87930)
 [![Build Status](https://travis-ci.org/RedJanvier/elite-members-api.svg?branch=develop)](https://travis-ci.org/RedJanvier/elite-members-api)
 [![Coverage Status](https://coveralls.io/repos/github/RedJanvier/elite-members-api/badge.svg?branch=develop)](https://coveralls.io/github/RedJanvier/elite-members-api?branch=develop)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/codeclimate/codeclimate/test_coverage)
 
 This is a REST API based on Node Js, Express, Postgresql, and JWT for authentication.
