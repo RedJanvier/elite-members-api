@@ -30,7 +30,7 @@ This is a REST API based on Node Js, Express, Postgresql, and JWT for authentica
 - See a single member
 
 ```
-[GET] /api/v2/members/:
+[GET] /api/v2/members/:id
 
 :body: none
 ```
