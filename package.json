@@ -8,9 +8,9 @@
     "dev": "nodemon --exec babel-node app",
     "test": "(dropdb --if-exists test_elite && createdb test_elite ) && cross-env NODE_ENV=test npm run migrate && cross-env NODE_ENV=test npm run seed && cross-env NODE_ENV=test mocha --require @babel/register __test__/*.test.js --timeout 10000 --exit",
     "lint": "eslint **/*.js",
-    "seed": "node_modules/.bin/knex seed:run",
+    "seed": "npx knex seed:run",
     "lint:fix": "prettier-eslint '**/*.js' --write",
-    "migrate": "node_modules/.bin/knex migrate:latest",
+    "migrate": "npx knex migrate:latest",
     "coverage": "nyc  --reporter=html --reporter=text npm run test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },

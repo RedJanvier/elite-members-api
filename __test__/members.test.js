@@ -56,6 +56,20 @@ describe('[ GET /api/v2/members/:id ] get a single member', () => {
       });
   });
 
+  it('should fail if id is invalid', done => {
+    chai
+      .request(app)
+      .get('/api/v2/members/algo-malo')
+      .end((err, res) => {
+        res.should.have.status(500);
+        res.body.should.be.a('object');
+        res.body.success.should.equal(false);
+
+        if (err) console.log(err);
+        done();
+      });
+  });
+
   it('returns all details for the  member', done => {
     chai
       .request(app)
