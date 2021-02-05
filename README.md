@@ -4,7 +4,6 @@
 [![Build Status](https://travis-ci.org/RedJanvier/elite-members-api.svg?branch=develop)](https://travis-ci.org/RedJanvier/elite-members-api)
 [![Coverage Status](https://coveralls.io/repos/github/RedJanvier/elite-members-api/badge.svg?branch=develop)](https://coveralls.io/github/RedJanvier/elite-members-api?branch=develop)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/test_coverage)](https://codeclimate.com/github/codeclimate/codeclimate/test_coverage)
 
 This is a REST API based on Node Js, Express, Postgresql, and JWT for authentication which deals with managing and maintaining members of a class group called Elite.
 

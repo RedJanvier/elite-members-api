@@ -2,20 +2,17 @@ import db from './knex';
 
 export default {
   async getAll() {
-    const members = await db
-      .select('*')
-      .from('members')
-      .orderBy('name', 'asc');
+    const members = await db.select('*').from('members').orderBy('name', 'asc');
 
     return members;
   },
+
   async getSingle(id) {
-    const member = await db('members')
-      .select('*')
-      .where({ id });
+    const member = await db('members').select('*').where({ id });
 
     return member;
   },
+
   async getLogin(email) {
     const data = await db('members')
       .join('login', 'members.id', 'login.member_id')
@@ -30,6 +27,7 @@ export default {
 
     return data;
   },
+
   async createMember({ name, email, shares, location, img, committee }) {
     const data = await db('members')
       .insert({
@@ -43,10 +41,12 @@ export default {
       .returning('id');
     return data;
   },
+
   async storeHash(hash, id) {
     const stored = await db('login').insert({ member_id: id, hash });
     return stored;
   },
+
   async editMember(id, job) {
     const member = await db('members')
       .where({ id })
@@ -54,10 +54,9 @@ export default {
       .returning('*');
     return member;
   },
+
   async deleteMember(id) {
-    const member = await db('members')
-      .where({ id })
-      .del();
+    const member = await db('members').where({ id }).del();
     return member;
   },
 };

@@ -1,17 +1,15 @@
-import express from 'express';
+import express, { json } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import { config } from 'dotenv';
+import 'dotenv/config';
 import routes from './routes/index';
 
-config();
 const app = express();
-const PORT = process.env.PORT || 3000;
+const { PORT } = process.env;
 
-app.use(express.json());
+app.use(json());
 app.use(cors());
 app.use(morgan('dev'));
-
 app.use('/api/v2/', routes);
 
 app.use((req, res) =>
@@ -24,8 +22,6 @@ app.use((req, res) =>
   })
 );
 
-app.listen(PORT, () =>
-  console.log(`server started at http://localhost:${PORT}`)
-);
+app.listen(PORT, console.log(`server started at http://localhost:${PORT}`));
 
 export default app;
