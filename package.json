@@ -4,9 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "babel-node app",
-    "dev": "nodemon --exec babel-node app",
-    "test": "(dropdb --if-exists test_elite && createdb test_elite ) && cross-env NODE_ENV=test npm run migrate && cross-env NODE_ENV=test npm run seed && cross-env NODE_ENV=test mocha --require @babel/register __test__/*.test.js --timeout 10000 --exit",
+    "start": "babel-node src/app",
+    "dev": "nodemon --exec babel-node src/app",
+    "test": "(dropdb --if-exists test_elite && createdb test_elite ) && cross-env NODE_ENV=test npm run migrate && cross-env NODE_ENV=test npm run seed && cross-env NODE_ENV=test mocha --require @babel/register src/__test__/*.test.js --timeout 10000 --exit",
     "lint": "eslint **/*.js",
     "seed": "npx knex seed:run",
     "lint:fix": "prettier-eslint '**/*.js' --write",
@@ -14,20 +14,9 @@
     "coverage": "nyc  --reporter=html --reporter=text npm run test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "**/*.js": [
-      "npm run lint:fix",
-      "git add"
-    ]
-  },
   "keywords": [],
   "author": "RedJanvier",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",

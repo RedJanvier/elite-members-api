@@ -1,31 +1,29 @@
-require('dotenv').config();
+require('dotenv/config');
 // Update with your config settings.
 
-module.exports = {
-  development: {
-    client: 'pg',
-    connection: process.env.DATABASE_URL,
-    migrations: {
-      directory: './migrations',
-    },
-    seeds: {
-      directory: './seeds',
-    },
+const { DATABASE_URL, DB } = process.env;
+const config = {
+  client: 'pg',
+  connection: DATABASE_URL,
+  migrations: {
+    directory: './src/db/migrations',
   },
+  seeds: {
+    directory: './src/db/seeds',
+  },
+};
 
+module.exports = {
+  production: config,
+  development: config,
   test: {
     client: 'pg',
-    connection: process.env.DB,
     migrations: {
-      directory: './migrations',
+      directory: './src/db/migrations',
     },
     seeds: {
-      directory: './seeds',
+      directory: './src/db/seeds',
     },
-  },
-
-  production: {
-    client: 'postgresql',
-    connection: process.env.DATABASE_URL,
+    connection: DB,
   },
 };

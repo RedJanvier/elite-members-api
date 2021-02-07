@@ -1,5 +1,5 @@
-exports.up = async knex => {
-  const members = await knex.schema.createTable('members', table => {
+exports.up = knex => {
+  return knex.schema.createTable('members', table => {
     table.increments('id').primary();
     table
       .string('img')
@@ -15,7 +15,6 @@ exports.up = async knex => {
       .notNullable()
       .unique();
   });
-  return members;
 };
 
 exports.down = knex => knex.schema.dropTable('members');

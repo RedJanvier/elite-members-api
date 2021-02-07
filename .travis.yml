@@ -3,7 +3,7 @@ sudo: false
 language: node_js
 
 env:
-  - DB=postgres://redjanvier:123456@localhost/elite
+  - DB=postgres://redjanvier:123456@localhost/elite_test
 
 node_js:
   - node
@@ -19,7 +19,7 @@ services:
 
 before_script:
   # - npm install codeclimate-test-reporter nyc -g
-  - psql -c "CREATE DATABASE elite;" -U postgres
+  - psql -c "CREATE DATABASE elite_test;" -U postgres
   - psql -c "CREATE USER RedJanvier WITH LOGIN SUPERUSER CREATEDB CREATEROLE INHERIT NOREPLICATION CONNECTION LIMIT -1 PASSWORD '123456'" -U postgres
 
 script:
@@ -27,4 +27,4 @@ script:
 
 after_success:
   - npm run coveralls
-  - psql -c 'DROP DATABASE elite;' -U postgres
+  - psql -c 'DROP DATABASE elite_test;' -U postgres

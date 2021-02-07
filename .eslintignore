@@ -1,2 +1,5 @@
 node_modules
 coverage
+__test__
+knexfile.js
+db_schema.js

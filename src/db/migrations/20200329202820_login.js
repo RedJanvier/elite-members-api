@@ -1,5 +1,5 @@
 exports.up = async knex => {
-  const login = await knex.schema.createTable('login', table => {
+  return knex.schema.createTable('login', table => {
     table.increments('id').primary();
     table.string('hash').unique();
     table
@@ -17,7 +17,6 @@ exports.up = async knex => {
       .references('id')
       .inTable('members');
   });
-  return login;
 };
 
 exports.down = knex => knex.schema.dropTable('login');
